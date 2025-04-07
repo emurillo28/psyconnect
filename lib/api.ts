@@ -163,6 +163,14 @@ export class ApiClient {
     return response.json();
   }
 
+  static async updateNotification(notificationId: string, data: any) {
+    const response = await this.fetchWithAuth(`/api/v1/notifications/${notificationId}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  }
+
   static async updateNotificationPreferences(preferences: any) {
     const response = await this.fetchWithAuth('/api/v1/notifications/preferences', {
       method: 'PUT',

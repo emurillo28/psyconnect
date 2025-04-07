@@ -15,7 +15,6 @@ export const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const api = new ApiClient();
 
   useEffect(() => {
     loadNotifications();
@@ -24,7 +23,7 @@ export const Notifications: React.FC = () => {
   const loadNotifications = async () => {
     try {
       setLoading(true);
-      const data = await api.getNotifications();
+      const data = await ApiClient.getNotifications();
       setNotifications(data);
       setError(null);
     } catch (err) {
@@ -37,7 +36,7 @@ export const Notifications: React.FC = () => {
 
   const markAsRead = async (notificationId: string) => {
     try {
-      await api.updateNotification(notificationId, { read: true });
+      await ApiClient.updateNotification(notificationId, { read: true });
       setNotifications(prev =>
         prev.map(n => (n.id === notificationId ? { ...n, read: true } : n))
       );
