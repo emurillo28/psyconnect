@@ -1,4 +1,4 @@
-import React from 'react';
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Layout } from '../components/Layout';
 import { ThemeProvider } from '../components/theme-provider';
@@ -6,7 +6,7 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'The Soul App - Mental Health Support',
   description: 'A comprehensive mental health support platform with therapy, assessments, and self-care tools.',
 };

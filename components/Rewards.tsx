@@ -20,15 +20,19 @@ export const Rewards: React.FC = () => {
     }
   };
 
+  if (!state) {
+    return <div>Loading rewards...</div>;
+  }
+
   // Combine unlocked and available rewards
   const allRewards: Reward[] = [
-    ...state.rewards.unlocked.map(id => ({
+    ...(state.rewards?.unlocked || []).map(id => ({
       id,
       title: `Reward ${id}`,
       description: 'You have unlocked this reward!',
       claimed: true
     })),
-    ...state.rewards.available.map(id => ({
+    ...(state.rewards?.available || []).map(id => ({
       id,
       title: `Reward ${id}`,
       description: 'Available to unlock',
@@ -79,14 +83,14 @@ export const Rewards: React.FC = () => {
         ))}
       </div>
 
-      {nextRewardId && (
+      {nextRewardId && state.nextLevelPoints !== undefined && (
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <h4 className="font-medium text-blue-800">Next Reward</h4>
           <p className="text-sm text-blue-600">
             Reward {nextRewardId} - Available to unlock
           </p>
           <p className="text-xs text-blue-500 mt-1">
-            {state.nextLevelPoints - state.points} points to go!
+            {state.nextLevelPoints - (state.points || 0)} points to go!
           </p>
         </div>
       )}
