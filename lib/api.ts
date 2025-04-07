@@ -1,6 +1,7 @@
 import { config } from './config';
 import { Amplify } from 'aws-amplify';
-import { signIn, signUp, signOut, currentSession } from '@aws-amplify/auth';
+import { signIn, signUp, signOut } from '@aws-amplify/auth';
+import { fetchAuthSession } from '@aws-amplify/auth';
 
 // Configure Amplify
 Amplify.configure({
@@ -14,8 +15,8 @@ Amplify.configure({
 export class ApiClient {
   private static async getAuthToken(): Promise<string> {
     try {
-      const session = await currentSession();
-      return session.getIdToken().getJwtToken();
+      const session = await fetchAuthSession();
+      return session.tokens.idToken.toString();
     } catch (error) {
       console.error('Error getting auth token:', error);
       throw error;

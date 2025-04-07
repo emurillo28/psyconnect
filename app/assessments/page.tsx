@@ -393,8 +393,7 @@ export default function AssessmentsPage() {
               <div className="mb-6">
                 <Progress
                   value={((activeQuestion + 1) / assessment.questions.length) * 100}
-                  className="h-2"
-                  indicatorClassName={getColorClass(assessment.color).progress}
+                  className={`h-2 ${getColorClass(assessment.color).progress}`}
                 />
               </div>
 
