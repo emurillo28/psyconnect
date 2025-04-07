@@ -10,7 +10,7 @@ rm -f pnpm-lock.yaml
 npm install next@latest react@latest react-dom@latest @types/react@latest @types/react-dom@latest
 
 # Install UI dependencies
-npm install @radix-ui/react-accordion @radix-ui/react-avatar @radix-ui/react-dialog @radix-ui/react-label @radix-ui/react-slot @radix-ui/react-icons @radix-ui/react-radio-group @radix-ui/react-select @radix-ui/react-separator @radix-ui/react-progress @radix-ui/react-switch @radix-ui/react-tabs
+npm install @radix-ui/react-alert-dialog @radix-ui/react-accordion @radix-ui/react-avatar @radix-ui/react-dialog @radix-ui/react-label @radix-ui/react-slot @radix-ui/react-icons @radix-ui/react-radio-group @radix-ui/react-select @radix-ui/react-separator @radix-ui/react-progress @radix-ui/react-switch @radix-ui/react-tabs
 
 # Install utility dependencies
 npm install class-variance-authority clsx tailwind-merge tailwindcss-animate next-themes lucide-react
