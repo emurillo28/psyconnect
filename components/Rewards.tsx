@@ -10,7 +10,7 @@ interface Reward {
 
 export const Rewards: React.FC = () => {
   const { state, claimReward, getNextReward } = useGamification();
-  const nextReward = getNextReward();
+  const nextRewardId = getNextReward();
 
   const handleClaimReward = async (rewardId: string) => {
     try {
@@ -79,14 +79,14 @@ export const Rewards: React.FC = () => {
         ))}
       </div>
 
-      {nextReward && (
+      {nextRewardId && (
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <h4 className="font-medium text-blue-800">Next Reward</h4>
           <p className="text-sm text-blue-600">
-            {nextReward.title} - {nextReward.description}
+            Reward {nextRewardId} - Available to unlock
           </p>
           <p className="text-xs text-blue-500 mt-1">
-            {nextReward.pointsRequired - state.points} points to go!
+            {state.nextLevelPoints - state.points} points to go!
           </p>
         </div>
       )}
