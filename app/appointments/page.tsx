@@ -45,10 +45,19 @@ export default function AppointmentsPage() {
     const rows = Math.ceil(totalDays / 7)
 
     // Generate calendar days
-    const days = []
+    interface CalendarDay {
+      date: Date
+      dayOfMonth: number
+      isCurrentMonth: boolean
+      isToday: boolean
+      hasAppointment: boolean
+    }
+    
+    const days: CalendarDay[] = []
     let dayCount = 1 - daysFromPrevMonth
 
     for (let i = 0; i < rows * 7; i++) {
+      // Create date safely by using the current month's year and month
       const date = new Date(year, month, dayCount)
       const isCurrentMonth = date.getMonth() === month
 
