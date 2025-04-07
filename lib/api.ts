@@ -1,5 +1,6 @@
 import { config } from './config';
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
+import { signIn, signUp, signOut, currentSession } from '@aws-amplify/auth';
 
 // Configure Amplify
 Amplify.configure({
@@ -13,7 +14,7 @@ Amplify.configure({
 export class ApiClient {
   private static async getAuthToken(): Promise<string> {
     try {
-      const session = await Auth.currentSession();
+      const session = await currentSession();
       return session.getIdToken().getJwtToken();
     } catch (error) {
       console.error('Error getting auth token:', error);
@@ -40,11 +41,11 @@ export class ApiClient {
 
   // Auth Methods
   static async login(email: string, password: string) {
-    return Auth.signIn(email, password);
+    return signIn(email, password);
   }
 
   static async register(email: string, password: string, name: string) {
-    return Auth.signUp({
+    return signUp({
       username: email,
       password,
       attributes: {
@@ -55,7 +56,7 @@ export class ApiClient {
   }
 
   static async logout() {
-    return Auth.signOut();
+    return signOut();
   }
 
   // User Methods
