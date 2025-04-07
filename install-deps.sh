@@ -32,4 +32,4 @@ if [ ! -f tsconfig.json ]; then
     npx tsc --init
 fi
 
-echo "Installation complete!" 
+echo "Installation complete!!" 
