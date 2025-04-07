@@ -1,14 +1,15 @@
 import { config } from './config';
 import { Amplify } from 'aws-amplify';
-import { signIn, signUp, signOut } from '@aws-amplify/auth';
-import { fetchAuthSession } from '@aws-amplify/auth';
+import { signIn, signUp, signOut, fetchAuthSession } from 'aws-amplify/auth';
 
 // Configure Amplify
 Amplify.configure({
   Auth: {
-    region: config.aws.region,
-    userPoolId: config.aws.cognito.userPoolId,
-    userPoolWebClientId: config.aws.cognito.clientId,
+    Cognito: {
+      userPoolId: config.aws.cognito.userPoolId,
+      userPoolClientId: config.aws.cognito.clientId,
+      region: config.aws.region,
+    },
   },
 });
 

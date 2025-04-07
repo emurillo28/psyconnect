@@ -20,7 +20,7 @@ npm install class-variance-authority@0.7.0 clsx@2.1.0 tailwind-merge@2.2.1 tailw
 
 # Install AWS dependencies
 echo "Installing AWS dependencies..."
-npm install aws-amplify@6.0.12 @aws-amplify/auth@6.0.12 @aws-amplify/core@6.0.12
+npm install aws-amplify@6.0.12
 
 # Install development dependencies
 echo "Installing development dependencies..."
