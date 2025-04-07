@@ -1,6 +1,13 @@
 import React from 'react';
 import { useGamification } from '../hooks/useGamification';
 
+interface Reward {
+  id: string;
+  title: string;
+  description: string;
+  claimed: boolean;
+}
+
 export const Rewards: React.FC = () => {
   const { state, claimReward, getNextReward } = useGamification();
   const nextReward = getNextReward();
@@ -13,12 +20,28 @@ export const Rewards: React.FC = () => {
     }
   };
 
+  // Combine unlocked and available rewards
+  const allRewards: Reward[] = [
+    ...state.rewards.unlocked.map(id => ({
+      id,
+      title: `Reward ${id}`,
+      description: 'You have unlocked this reward!',
+      claimed: true
+    })),
+    ...state.rewards.available.map(id => ({
+      id,
+      title: `Reward ${id}`,
+      description: 'Available to unlock',
+      claimed: false
+    }))
+  ];
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Rewards</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {state.rewards.map((reward) => (
+        {allRewards.map((reward) => (
           <div
             key={reward.id}
             className={`p-4 rounded-lg border ${
