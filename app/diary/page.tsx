@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Calendar, ChevronLeft, ChevronRight, Home, Plus, FileText, ClipboardCheck, User } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -23,21 +24,21 @@ import { Textarea } from "@/components/ui/textarea"
 const sampleEntries = [
   {
     id: 1,
-    date: "14 de marzo, 2025",
+    date: "14 de mayo, 2025",
     mood: "Tranquilo",
     content:
       "Hoy fue un día productivo. Logré completar todas mis tareas sin sentirme abrumado. Los ejercicios de respiración que me recomendó la Dra. Johnson realmente están ayudando con mi ansiedad.",
   },
   {
     id: 2,
-    date: "12 de marzo, 2025",
+    date: "12 de mayo, 2025",
     mood: "Ansioso",
     content:
       "Me sentí ansioso por la próxima presentación en el trabajo. Usé las técnicas de conexión a tierra que discutimos en terapia, lo que ayudó un poco. Necesito practicar más la autocompasión.",
   },
   {
     id: 3,
-    date: "10 de marzo, 2025",
+    date: "10 de mayo, 2025",
     mood: "Feliz",
     content:
       "¡Tuve un gran día hoy! Pasé tiempo con amigos y me sentí genuinamente presente en el momento. Estas conexiones son muy importantes para mi salud mental.",
@@ -49,14 +50,52 @@ export default function DiaryPage() {
   const [selectedEntry, setSelectedEntry] = useState<number | null>(1)
   const [newEntry, setNewEntry] = useState({ mood: "", content: "" })
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const moodOptions = ["Feliz", "Tranquilo", "Neutral", "Triste", "Ansioso", "Enojado", "Abrumado"]
 
-  const handleNewEntry = () => {
+  // Simulate data loading
+  useEffect(() => {
+    // Future integration: Fetch diary entries from AWS RDS through API
+    // const fetchEntries = async () => {
+    //   try {
+    //     const response = await diaryApi.getEntries();
+    //     setEntries(response.data);
+    //   } catch (error) {
+    //     console.error('Error fetching diary entries:', error);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // };
+
+    // fetchEntries();
+
+    // For now, just simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  const handleNewEntry = async () => {
+    // Future integration: Save to AWS RDS through API
+    // try {
+    //   const response = await diaryApi.createEntry({
+    //     mood: newEntry.mood,
+    //     content: newEntry.content,
+    //   });
+    //   setEntries([response.data, ...entries]);
+    //   setSelectedEntry(response.data.id);
+    // } catch (error) {
+    //   console.error('Error creating diary entry:', error);
+    // }
+
+    // For now, just add to local state
     const today = new Date()
-    const formattedDate = today.toLocaleDateString("en-US", {
-      month: "long",
+    const formattedDate = today.toLocaleDateString("es", {
       day: "numeric",
+      month: "long",
       year: "numeric",
     })
 
@@ -74,24 +113,32 @@ export default function DiaryPage() {
   }
 
   const getMoodColor = (mood: string) => {
-    switch (mood) {
-      case "Happy":
+    switch (mood.toLowerCase()) {
+      case "feliz":
         return "bg-green-100 text-green-800"
-      case "Calm":
+      case "tranquilo":
         return "bg-blue-100 text-blue-800"
-      case "Neutral":
+      case "neutral":
         return "bg-gray-100 text-gray-800"
-      case "Sad":
+      case "triste":
         return "bg-indigo-100 text-indigo-800"
-      case "Anxious":
+      case "ansioso":
         return "bg-yellow-100 text-yellow-800"
-      case "Angry":
+      case "enojado":
         return "bg-red-100 text-red-800"
-      case "Overwhelmed":
+      case "abrumado":
         return "bg-purple-100 text-purple-800"
       default:
         return "bg-gray-100 text-gray-800"
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-300"></div>
+      </div>
+    )
   }
 
   return (
@@ -100,7 +147,10 @@ export default function DiaryPage() {
       <header className="sticky top-0 z-10 border-b bg-white/80 backdrop-blur-sm">
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-medium">psyconnect</h1>
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <Image src="/soul-logo.png" alt="Soul Logo" width={30} height={30} />
+              <h1 className="text-xl font-medium">soul</h1>
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <nav className="flex gap-1 sm:gap-4">
@@ -429,4 +479,3 @@ export default function DiaryPage() {
     </div>
   )
 }
-

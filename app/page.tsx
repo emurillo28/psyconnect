@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Calendar, FileText, ClipboardCheck, User } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -9,9 +10,16 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
+        {/* Gradient background */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-70"></div>
+
         <div className="container relative px-4 py-20 md:py-32 flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-5xl font-medium mb-4">psyconnect</h1>
+          {/* Logo */}
+          <div className="mb-6">
+            <Image src="/soul-logo.png" alt="Soul Logo" width={80} height={80} priority />
+          </div>
+
+          <h1 className="text-4xl md:text-5xl font-medium mb-4">the soul app</h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl">
             Tu espacio personal para el bienestar mental y la autorreflexión
           </p>
@@ -33,6 +41,7 @@ export default function LandingPage() {
       <section className="container px-4 py-16">
         <h2 className="text-2xl md:text-3xl font-medium mb-12 text-center">Características</h2>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {/* Feature 1: Citas */}
           <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50 transition-all duration-300 hover:shadow-md hover:translate-y-[-5px] float-animation">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -47,6 +56,8 @@ export default function LandingPage() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Feature 2: Diario Emocional */}
           <Card className="border-green-100 bg-gradient-to-br from-white to-green-50 transition-all duration-300 hover:shadow-md hover:translate-y-[-5px] float-animation-slow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -61,6 +72,8 @@ export default function LandingPage() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Feature 3: Evaluaciones */}
           <Card className="border-purple-100 bg-gradient-to-br from-white to-purple-50 transition-all duration-300 hover:shadow-md hover:translate-y-[-5px] float-animation-fast">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -75,6 +88,8 @@ export default function LandingPage() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Feature 4: Atención Personalizada */}
           <Card className="border-pink-100 bg-gradient-to-br from-white to-pink-50 transition-all duration-300 hover:shadow-md hover:translate-y-[-5px] float-animation">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -97,6 +112,7 @@ export default function LandingPage() {
         <div className="container px-4">
           <h2 className="text-2xl md:text-3xl font-medium mb-12 text-center">Para Pacientes y Terapeutas</h2>
           <div className="grid md:grid-cols-2 gap-12">
+            {/* Patient Section */}
             <div className="bg-white p-8 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md hover:translate-y-[-5px]">
               <h3 className="text-xl font-medium mb-4 flex items-center gap-2">
                 <User className="h-5 w-5 text-blue-400" />
@@ -140,6 +156,8 @@ export default function LandingPage() {
                 <Link href="/register?role=patient">Registrarse como Paciente</Link>
               </Button>
             </div>
+
+            {/* Therapist Section */}
             <div className="bg-white p-8 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md hover:translate-y-[-5px]">
               <h3 className="text-xl font-medium mb-4 flex items-center gap-2">
                 <User className="h-5 w-5 text-purple-400" />
@@ -191,9 +209,12 @@ export default function LandingPage() {
       <footer className="bg-white border-t py-8">
         <div className="container px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <h2 className="text-xl font-medium">psyconnect</h2>
-              <p className="text-sm text-muted-foreground">Tu compañero de bienestar mental</p>
+            <div className="mb-4 md:mb-0 flex items-center gap-2">
+              <Image src="/soul-logo.png" alt="Soul Logo" width={30} height={30} />
+              <div>
+                <h2 className="text-xl font-medium">soul</h2>
+                <p className="text-sm text-muted-foreground">Tu compañero de bienestar mental</p>
+              </div>
             </div>
             <div className="flex gap-6">
               <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
@@ -215,4 +236,3 @@ export default function LandingPage() {
     </div>
   )
 }
-

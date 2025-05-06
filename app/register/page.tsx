@@ -4,7 +4,8 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import Image from "next/image"
+import { useSearchParams } from "next/navigation"
 import { Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -12,6 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -19,7 +21,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [role, setRole] = useState("patient")
-  const router = useRouter()
+  const { register, isLoading, error } = useAuth()
   const searchParams = useSearchParams()
 
   // Set default role from URL if provided
@@ -30,17 +32,16 @@ export default function RegisterPage() {
     }
   })
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real app, you would register with a backend
-    // For now, we'll just redirect to the dashboard
-    router.push("/dashboard")
+    await register(name, email, password, role)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 flex flex-col items-center justify-center p-4">
-      <Link href="/" className="mb-8 text-xl font-medium">
-        psyconnect
+      <Link href="/" className="mb-8 flex flex-col items-center">
+        <Image src="/soul-logo.png" alt="Soul Logo" width={60} height={60} className="mb-2" />
+        <span className="text-xl font-medium">soul</span>
       </Link>
 
       <Card className="w-full max-w-md transition-all duration-300 hover:shadow-md">
@@ -107,8 +108,13 @@ export default function RegisterPage() {
                 </div>
               </RadioGroup>
             </div>
-            <Button type="submit" className="w-full bg-purple-300 hover:bg-purple-400 transition-all duration-300">
-              Crear Cuenta
+            {error && <p className="text-sm text-red-500">{error}</p>}
+            <Button
+              type="submit"
+              className="w-full bg-purple-300 hover:bg-purple-400 transition-all duration-300"
+              disabled={isLoading}
+            >
+              {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
             </Button>
           </form>
         </CardContent>
@@ -124,4 +130,3 @@ export default function RegisterPage() {
     </div>
   )
 }
-

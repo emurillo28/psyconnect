@@ -1,33 +1,28 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Layout } from '../components/Layout';
-import { ThemeProvider } from '../components/theme-provider';
-import './globals.css';
+import type React from "react"
+import { AuthProvider } from "@/contexts/auth-context"
 
-const inter = Inter({ subsets: ['latin'] });
+export const metadata = {
+  title: "The Soul App | Bienestar Mental y Autorreflexión",
+  description: "Tu espacio personal para el bienestar mental y la autorreflexión",
+    generator: 'v0.dev'
+}
 
-export const metadata: Metadata = {
-  title: 'The Soul App - Mental Health Support',
-  description: 'A comprehensive mental health support platform with therapy, assessments, and self-care tools.',
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Layout>{children}</Layout>
-        </ThemeProvider>
+    <html lang="es">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
-  );
+  )
 }
+
+
+import './globals.css'

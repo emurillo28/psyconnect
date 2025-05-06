@@ -430,23 +430,21 @@ SidebarGroup.displayName = "SidebarGroup"
 
 const SidebarGroupLabel = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<"div"> & {
-    asChild?: boolean
-  }
->(({ asChild, className, children, ...props }, ref) => {
+  React.ComponentProps<"div"> & { asChild?: boolean }
+>(({ className, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "div"
+
   return (
     <Comp
-      ref={asChild ? (ref as React.Ref<HTMLElement>) : (ref as React.Ref<HTMLDivElement>)}
+      ref={ref}
       data-sidebar="group-label"
       className={cn(
         "duration-200 flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opa] ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
         className
       )}
       {...props}
-    >
-      {children}
-    </Comp>
+    />
   )
 })
 SidebarGroupLabel.displayName = "SidebarGroupLabel"
@@ -456,9 +454,10 @@ const SidebarGroupAction = React.forwardRef<
   React.ComponentProps<"button"> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "button"
+
   return (
     <Comp
-      ref={asChild ? (ref as React.Ref<HTMLElement>) : (ref as React.Ref<HTMLButtonElement>)}
+      ref={ref}
       data-sidebar="group-action"
       className={cn(
         "absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
@@ -559,7 +558,7 @@ const SidebarMenuButton = React.forwardRef<
 
     const button = (
       <Comp
-        ref={asChild ? undefined : ref}
+        ref={ref}
         data-sidebar="menu-button"
         data-size={size}
         data-active={isActive}

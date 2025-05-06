@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { ChevronLeft, ChevronRight, Clock, Home, Plus, Calendar, FileText, ClipboardCheck, User } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -21,6 +22,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export default function AppointmentsPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Simulate data loading
+  useEffect(() => {
+    // Future integration: Fetch appointment data from API
+    // const fetchAppointments = async () => {
+    //   try {
+    //     const response = await appointmentsApi.getAll();
+    //     // Process appointments data
+    //   } catch (error) {
+    //     console.error('Error fetching appointments:', error);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // };
+
+    // fetchAppointments();
+
+    // For now, just simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   // Generate calendar days
   const generateCalendarDays = () => {
@@ -45,19 +71,10 @@ export default function AppointmentsPage() {
     const rows = Math.ceil(totalDays / 7)
 
     // Generate calendar days
-    interface CalendarDay {
-      date: Date
-      dayOfMonth: number
-      isCurrentMonth: boolean
-      isToday: boolean
-      hasAppointment: boolean
-    }
-    
-    const days: CalendarDay[] = []
+    const days = []
     let dayCount = 1 - daysFromPrevMonth
 
     for (let i = 0; i < rows * 7; i++) {
-      // Create date safely by using the current month's year and month
       const date = new Date(year, month, dayCount)
       const isCurrentMonth = date.getMonth() === month
 
@@ -100,19 +117,30 @@ export default function AppointmentsPage() {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-300"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="sticky top-0 z-10 border-b bg-white/80 backdrop-blur-sm">
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-medium">psyconnect</h1>
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <Image src="/soul-logo.png" alt="Soul Logo" width={30} height={30} />
+              <h1 className="text-xl font-medium">soul</h1>
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <nav className="flex gap-1 sm:gap-4">
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
-                <Link href="/">
-                  <Home className="h-5 w-5 text-pink-200" />
+                <Link href="/dashboard">
+                  <Home className="h-5 w-5 text-pink-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Inicio</span>
                 </Link>
               </Button>
@@ -123,25 +151,25 @@ export default function AppointmentsPage() {
                 className="flex flex-col items-center px-2 sm:flex-row sm:px-3 bg-blue-50"
               >
                 <Link href="/appointments">
-                  <Calendar className="h-5 w-5 text-blue-200" />
+                  <Calendar className="h-5 w-5 text-blue-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Citas</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
                 <Link href="/diary">
-                  <FileText className="h-5 w-5 text-green-200" />
+                  <FileText className="h-5 w-5 text-green-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Diario</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
                 <Link href="/assessments">
-                  <ClipboardCheck className="h-5 w-5 text-purple-200" />
+                  <ClipboardCheck className="h-5 w-5 text-purple-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Evaluaciones</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
                 <Link href="/profile">
-                  <User className="h-5 w-5 text-yellow-200" />
+                  <User className="h-5 w-5 text-yellow-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Perfil</span>
                 </Link>
               </Button>
@@ -225,7 +253,7 @@ export default function AppointmentsPage() {
                   </div>
                   <div>
                     <p className="font-medium">Dr. Michael Chen</p>
-                    <p className="text-sm text-muted-foreground">19 de marzo, 2:30 PM</p>
+                    <p className="text-sm text-muted-foreground">19 de mayo, 2:30 PM</p>
                     <p className="mt-2 text-sm">Sesión de Terapia de Grupo</p>
                   </div>
                 </div>
@@ -310,4 +338,3 @@ export default function AppointmentsPage() {
     </div>
   )
 }
-

@@ -4,31 +4,31 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const router = useRouter()
+  const { login, isLoading, error } = useAuth()
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real app, you would authenticate with a backend
-    // For now, we'll just redirect to the dashboard
-    router.push("/dashboard")
+    await login(email, password)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 flex flex-col items-center justify-center p-4">
-      <Link href="/" className="mb-8 text-xl font-medium">
-        psyconnect
+      <Link href="/" className="mb-8 flex flex-col items-center">
+        <Image src="/soul-logo.png" alt="Soul Logo" width={60} height={60} className="mb-2" />
+        <span className="text-xl font-medium">soul</span>
       </Link>
 
       <Card className="w-full max-w-md transition-all duration-300 hover:shadow-md">
@@ -73,8 +73,13 @@ export default function LoginPage() {
                 </button>
               </div>
             </div>
-            <Button type="submit" className="w-full bg-blue-300 hover:bg-blue-400 transition-all duration-300">
-              Iniciar Sesión
+            {error && <p className="text-sm text-red-500">{error}</p>}
+            <Button
+              type="submit"
+              className="w-full bg-blue-300 hover:bg-blue-400 transition-all duration-300"
+              disabled={isLoading}
+            >
+              {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
             </Button>
           </form>
         </CardContent>
@@ -90,4 +95,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

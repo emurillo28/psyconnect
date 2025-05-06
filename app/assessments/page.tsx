@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Home, Calendar, FileText, ClipboardCheck, User, ArrowLeft, ArrowRight, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -203,8 +204,33 @@ export default function AssessmentsPage() {
   const [isAssessmentActive, setIsAssessmentActive] = useState(false)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const assessment = assessments.find((a) => a.id === selectedAssessment)
+
+  // Simulate data loading
+  useEffect(() => {
+    // Future integration: Fetch assessment data from API
+    // const fetchAssessments = async () => {
+    //   try {
+    //     const response = await assessmentsApi.getAvailable();
+    //     // Process assessments data
+    //   } catch (error) {
+    //     console.error('Error fetching assessments:', error);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // };
+
+    // fetchAssessments();
+
+    // For now, just simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   // Handle swipe gestures
   useEffect(() => {
@@ -266,6 +292,8 @@ export default function AssessmentsPage() {
       setActiveQuestion(activeQuestion + 1)
     } else {
       // Assessment complete
+      // Future integration: Submit assessment results to API
+      // assessmentsApi.submitResponse(assessment.id, answers);
       setIsAssessmentActive(false)
     }
   }
@@ -320,31 +348,42 @@ export default function AssessmentsPage() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-300"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="sticky top-0 z-10 border-b bg-white/80 backdrop-blur-sm">
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-medium">psyconnect</h1>
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <Image src="/soul-logo.png" alt="Soul Logo" width={30} height={30} />
+              <h1 className="text-xl font-medium">soul</h1>
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <nav className="flex gap-1 sm:gap-4">
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
-                <Link href="/">
-                  <Home className="h-5 w-5 text-pink-200" />
+                <Link href="/dashboard">
+                  <Home className="h-5 w-5 text-pink-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Inicio</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
                 <Link href="/appointments">
-                  <Calendar className="h-5 w-5 text-blue-200" />
+                  <Calendar className="h-5 w-5 text-blue-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Citas</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
                 <Link href="/diary">
-                  <FileText className="h-5 w-5 text-green-200" />
+                  <FileText className="h-5 w-5 text-green-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Diario</span>
                 </Link>
               </Button>
@@ -355,13 +394,13 @@ export default function AssessmentsPage() {
                 className="flex flex-col items-center px-2 sm:flex-row sm:px-3 bg-purple-50"
               >
                 <Link href="/assessments">
-                  <ClipboardCheck className="h-5 w-5 text-purple-200" />
+                  <ClipboardCheck className="h-5 w-5 text-purple-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Evaluaciones</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="flex flex-col items-center px-2 sm:flex-row sm:px-3">
                 <Link href="/profile">
-                  <User className="h-5 w-5 text-yellow-200" />
+                  <User className="h-5 w-5 text-yellow-300" />
                   <span className="hidden text-xs sm:ml-2 sm:inline-block sm:text-sm">Perfil</span>
                 </Link>
               </Button>
@@ -393,7 +432,8 @@ export default function AssessmentsPage() {
               <div className="mb-6">
                 <Progress
                   value={((activeQuestion + 1) / assessment.questions.length) * 100}
-                  className={`h-2 ${getColorClass(assessment.color).progress}`}
+                  className="h-2"
+                  indicatorClassName={getColorClass(assessment.color).progress}
                 />
               </div>
 
@@ -481,8 +521,8 @@ export default function AssessmentsPage() {
                     </CardHeader>
                     <CardContent className="pt-6">
                       <p className="text-sm text-muted-foreground mb-4">
-                        {assessment.questions.length} questions • Approximately {assessment.questions.length * 30}{" "}
-                        seconds
+                        {assessment.questions.length} preguntas • Aproximadamente {assessment.questions.length * 30}{" "}
+                        segundos
                       </p>
                     </CardContent>
                     <CardFooter>
@@ -500,4 +540,3 @@ export default function AssessmentsPage() {
     </div>
   )
 }
-
